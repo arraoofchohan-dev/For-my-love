@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Eternal Bond - Esha & Raoof</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@200;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --accent: #ffb3c1;
+            --gold: #ffd700;
+            --deep-bg: radial-gradient(circle, #1a0514 0%, #000000 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+ 
+        body {
+            background: var(--deep-bg);
+            font-family: 'Montserrat', sans-serif;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Ambient Background */
+        .aura {
+            position: fixed;
+            width: 500px; height: 500px;
+            background: var(--primary);
+            filter: blur(180px);
+            opacity: 0.15;
+            z-index: 1;
+            animation: breathe 8s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.15; filter: hue-rotate(0deg); }
+            50% { transform: scale(1.4); opacity: 0.25; filter: hue-rotate(45deg); }
+        }
+
+        @keyframes pulseHeart {
+            0% { transform: scale(1); filter: drop-shadow(0 0 5px var(--primary)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 20px var(--primary)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--primary)); }
+        }
+
+        /* Container Styles */
+        .container {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 50px 30px;
+            border-radius: 40px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.9);
+            position: relative;
+        }
+
+        .hidden { display: none !important; opacity: 0; transform: translateY(30px); }
+        .visible { display: block !important; opacity: 1; transform: translateY(0); transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #fff, var(--accent), var(--gold), #fff);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shineText 3s linear infinite;
+        }
+
+        @keyframes shineText { to { background-position: 200% center; } }
+
+        /* Input Styles for Login */
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { font-size: 0.7rem; letter-spacing: 2px; color: var(--accent); margin-left: 15px; }
+        
+        input {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 20px;
+            border-radius: 15px;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 5px;
+            transition: 0.3s;
+        }
+
+        input:focus { border-color: var(--primary); background: rgba(255,255,255,0.1); }
+
+        .btn {
+            background: transparent;
+            color: white;
+            padding: 15px 40px;
+            border: 1.5px solid var(--primary);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .btn:hover { 
+            background: var(--primary); 
+            box-shadow: 0 0 30px rgba(255, 77, 109, 0.5);
+            transform: translateY(-3px);
+        }
+
+        #loginError { color: #ff4d6d; font-size: 0.8rem; margin-top: 15px; display: none; }
+
+        /* Main Project Specifics */
+        #typewriter, #future-typewriter { font-size: 1.1rem; line-height: 2; min-height: 140px; color: #fce4ec; margin: 20px 0; }
+        .gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        
+        .photo-slot { 
+            background: rgba(255,255,255,0.05); 
+            aspect-ratio: 1; 
+            border-radius: 15px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border: 1px solid rgba(255,255,255,0.1);
+            overflow: hidden; 
+            transition: 0.3s ease;
+        }
+
+        .photo-slot:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .photo-slot img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+        }
+
+        .meter-container { background: rgba(255,255,255,0.1); border-radius: 20px; height: 15px; width: 100%; margin: 15px 0; overflow: hidden; }
+        .meter-fill { background: linear-gradient(90deg, var(--primary), var(--gold)); height: 100%; width: 0%; transition: 2s ease-out; }
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+        .music-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 100; background: var(--primary); border: none; width: 45px; height: 45px; border-radius: 50%; color: white; cursor: pointer; }
+        #timer { color: var(--gold); font-weight: 600; margin-bottom: 10px; font-size: 0.9rem; }
+        .name-glow { color: var(--accent); }
+    </style>
+</head>
+<body>
+
+    <div class="aura"></div>
+    <div id="particles"></div>
+    
+    <audio id="bgMusic" loop>
+        <source src="song3.mp3.mp3" type="audio/mp3">
+    </audio>
+    <audio id="voiceMsg">
+        <source src="voice.mp3.opus" type="audio/mp3">
+    </audio>
+
+    <button class="music-toggle" onclick="toggleMusic()">🎵</button>
+
+    <div class="container visible" id="loginPage">
+        <div style="font-size: 0.7rem; letter-spacing: 5px; color: var(--primary); margin-bottom: 10px;">PRIVATE ACCESS</div>
+        <h1>For My Angel</h1>
+        <p style="font-size: 0.8rem; opacity: 0.6; margin-bottom: 30px;">Only for the one who holds the key to my heart.</p>
+        
+        <div class="input-group">
+            <label>ENTER SECRET KEY</label>
+            <input type="password" id="passInput" placeholder="Who are you to AR?">
+        </div>
+        
+        <button class="btn" onclick="checkLogin()">Unlock Heart ✨</button>
+        <p id="loginError">Galat password! Hint: Tum AR ki kya ho?</p>
+    </div>
+
+    <div class="container hidden" id="page1">
+        <div style="font-size: 0.7rem; letter-spacing: 4px; color: var(--primary); margin-bottom: 5px;">SINCE 20.03.2021</div>
+        <div id="timer"></div>
+        <h1>For <span class="name-glow">Esha</span>, With Love</h1>
+        <div id="typewriter"></div>
+        <button class="btn" id="btn1" style="display:none;" onclick="vibrate(); showPage(2)">See Our Moments ✨</button>
+    </div>
+
+    <div class="container hidden" id="page2">
+        <h1>Captured Memories</h1>
+        <div class="gallery">
+            <div class="photo-slot">
+                <img src="img10.jpg" alt="Memory 1">
+            </div>
+            <div class="photo-slot">
+                <img src="img11.jpg" alt="Memory 2">
+            </div>
+            <div class="photo-slot">
+                <img src="img13.jpg" alt="Memory 3">
+            </div>
+            <div class="photo-slot">
+                <img src="img10.jpg" alt="">
+            </div>
+        </div>
+        <button class="btn" onclick="vibrate(); playVoice()">🎤 Hear My Voice</button>
+        <button class="btn" onclick="vibrate(); showPage(3)">Memory Quiz 🧠</button>
+    </div>
+
+    <div class="container hidden" id="page3">
+        <h1>Soulmate Quiz</h1>
+        <p style="margin-bottom: 25px;">Which date changed <span class="name-glow">Raoof</span>'s life forever?</p>
+        <button class="btn" style="display:block; width:100%; margin: 10px 0;" onclick="vibrate(); wrong()">March 10, 2021</button>
+        <button class="btn" style="display:block; width:100%; margin: 10px 0;" onclick="vibrate(); showPage(4)">March 20, 2021</button>
+        <button class="btn" style="display:block; width:100%; margin: 10px 0;" onclick="vibrate(); wrong()">April 20, 2021</button>
+        <p id="hint" style="margin-top: 10px; color: var(--accent); font-size: 0.8rem;"></p>
+    </div>
+
+    <div class="container hidden" id="page4">
+        <h1>Why You? ❤️</h1>
+        <div class="meter-container"><div class="meter-fill" id="loveFill"></div></div>
+        <ul style="list-style: none; text-align: left; font-size: 0.9rem; line-height: 2.5; margin: 20px 0;">
+            <li>✨ Your smile that lights up my darkest days.</li>
+            <li>✨ The way you understand my silence.</li>
+            <li>✨ Our late night talks and 20th March memories.</li>
+            <li>✨ Simply because you are YOU, Esha.</li>
+        </ul>
+        <button class="btn" onclick="vibrate(); showPage(5)">The Final Promise</button>
+    </div>
+
+    <div class="container hidden" id="page5">
+        <h1 style="font-size: 4rem; animation: pulseHeart 2s infinite;">♾️</h1>
+        <h1>Hamara Hamesha</h1>
+        <div id="future-typewriter"></div>
+        <p style="font-size: 1.1rem; font-weight: 200; margin-top: 10px;">
+            "Five years toh bas trailer thay Esha... <br>
+            <span style="color: var(--gold); font-weight: 600;">Raoof ❤️ Esha Forever</span>"
+        </p>
+        <button class="btn" style="margin-top: 30px; border-color: var(--gold); color: var(--gold);" onclick="vibrate(); celebrate()">Hamesha Ke Liye ✨</button>
+    </div>
+
+    <script>
+        const SECRET_PASS = "Princess of AR";
+        const message = "My Dearest Esha, since the magical day of March 20th, 2021, my heart has found its rhythm. Every moment with you is a treasure I hold close to my soul. I've built this little world for you to show you how much you mean to me. Raoof is incomplete without his Esha...";
+        const futureMsg = "Esha, mera kal bhi tum ho aur mera aane wala har pal bhi tum ho. Main wada karta hoon ke har saal, har maheena aur har din humara pyaar aur bhi gehra hoga...";
+        
+        let i = 0, j = 0;
+
+        function checkLogin() {
+            const input = document.getElementById("passInput").value;
+            const error = document.getElementById("loginError");
+
+            if (input.toLowerCase() === SECRET_PASS.toLowerCase()) {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                document.getElementById("loginPage").classList.add("hidden");
+                setTimeout(() => {
+                    showPage(1);
+                    type();
+                }, 800);
+            } else {
+                error.style.display = "block";
+                document.getElementById("passInput").style.borderColor = "#ff4d6d";
+            }
+        }
+
+        function type() {
+            if (i < message.length) {
+                document.getElementById("typewriter").innerHTML += message.charAt(i);
+                i++;
+                setTimeout(type, 50);
+            } else {
+                document.getElementById("btn1").style.display = "inline-block";
+            }
+        }
+
+        function typeFuture() {
+            if (j < futureMsg.length) {
+                document.getElementById("future-typewriter").innerHTML += futureMsg.charAt(j);
+                j++;
+                setTimeout(typeFuture, 50);
+            }
+        }
+
+        function showPage(num) {
+            document.querySelectorAll('.container').forEach(c => {
+                c.classList.add('hidden');
+                c.classList.remove('visible');
+            });
+            const next = document.getElementById('page' + num);
+            next.classList.remove('hidden');
+            setTimeout(() => next.classList.add('visible'), 50);
+            
+            if(num === 4) setTimeout(() => document.getElementById('loveFill').style.width = '100%', 500);
+            if(num === 5) { j = 0; document.getElementById("future-typewriter").innerHTML = ""; typeFuture(); }
+        }
+
+        function updateTimer() {
+            const start = new Date("March 20, 2021 00:00:00").getTime();
+            const now = new Date().getTime();
+            const diff = now - start;
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const t = document.getElementById("timer");
+            if(t) t.innerHTML = `Together for ${days} days, ${hours}h, ${mins}m ❤️`;
+        }
+        setInterval(updateTimer, 1000);
+
+        function vibrate() { if (navigator.vibrate) navigator.vibrate(50); }
+        function playVoice() { document.getElementById('voiceMsg').play(); }
+        function celebrate() { 
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+            setTimeout(() => location.reload(), 3000); 
+        }
+        function wrong() { document.getElementById('hint').innerHTML = "Esha! Remember our date! 😉 ❤️"; }
+        function toggleMusic() {
+            const m = document.getElementById('bgMusic');
+            m.paused ? m.play() : m.pause();
+        }
+
+        // Particle System
+        setInterval(() => {
+            const p = document.createElement('div');
+            p.innerHTML = ['❤️', '✨', '💖', '⭐'][Math.floor(Math.random() * 4)];
+            p.style.position = 'fixed';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '-5vh';
+            p.style.fontSize = Math.random() * 20 + 10 + 'px';
+            p.style.opacity = Math.random();
+            p.style.transition = 'transform 6s linear, opacity 6s';
+            document.getElementById('particles').appendChild(p);
+            setTimeout(() => {
+                p.style.transform = `translateY(110vh) rotate(${Math.random() * 360}deg)`;
+                p.style.opacity = '0';
+            }, 100);
+            setTimeout(() => p.remove(), 7000);
+        }, 250);
+
+        window.onload = updateTimer;
+    </script>
+</body>
+</html>
